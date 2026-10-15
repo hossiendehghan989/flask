@@ -314,7 +314,9 @@ which can be useful if each part uses some common data.
 You can also separate views for different methods into different
 functions. Flask provides a shortcut for decorating such routes with
 :meth:`~flask.Flask.get`, :meth:`~flask.Flask.post`, etc. for each
-common HTTP method.
+common HTTP method. The shortcuts are ``get``, ``post``, ``put``, ``delete``,
+and ``patch``. Flask 3.2 also provides ``query`` for applications that use
+the HTTP ``QUERY`` method.
 
 .. code-block:: python
 
@@ -325,6 +327,15 @@ common HTTP method.
     @app.post('/login')
     def login_post():
         return do_the_login()
+
+The ``query`` shortcut is used in the same way::
+
+    @app.query('/search')
+    def search():
+        return search_results()
+
+To test this route, call ``client.open('/search', method='QUERY')``. The
+test client does not have a method-specific ``query`` helper.
 
 If ``GET`` is present, Flask automatically adds support for the ``HEAD`` method
 and handles ``HEAD`` requests according to the `HTTP RFC`_. Likewise,

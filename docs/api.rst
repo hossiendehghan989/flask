@@ -570,6 +570,35 @@ Here are some examples::
     def show_post(post_id):
         pass
 
+For common HTTP methods, Flask provides shortcut decorators that are
+equivalent to using :meth:`~flask.Flask.route` with a single-item
+``methods`` list::
+
+    @app.get('/users')
+    def list_users():
+        pass
+
+    @app.post('/users')
+    def create_user():
+        pass
+
+The available shortcuts are :meth:`~flask.Flask.get`,
+:meth:`~flask.Flask.post`, :meth:`~flask.Flask.put`,
+:meth:`~flask.Flask.delete`, :meth:`~flask.Flask.patch`, and
+:meth:`~flask.Flask.query`. The ``query`` shortcut registers the HTTP
+``QUERY`` method and was added in version 3.2. All route options, such as
+``endpoint`` and ``provide_automatic_options``, can be passed to these
+shortcuts. The ``methods`` option cannot be passed because the shortcut
+already selects the method.
+
+As with a ``GET`` route registered through ``route``, Flask adds ``HEAD``
+and ``OPTIONS`` handling automatically when appropriate. To send a
+``QUERY`` request with the test client, use ``open`` and provide the method
+explicitly, since Werkzeug's test client does not provide a ``query``
+convenience method::
+
+    response = client.open('/search', method='QUERY')
+
 An important detail to keep in mind is how Flask deals with trailing
 slashes. The idea is to keep each URL unique so the following rules
 apply:
